@@ -1,6 +1,10 @@
 (() => {
-  const PASSWORD = "c6Wu@Hb7";
+  const PASSWORD = "yuu32323327";
   const LOCK_KEY = "chatgpt-helper-sidebar-unlocked";
+
+  // 拡張機能を読み込むたびにロック状態をリセット
+  sessionStorage.removeItem(LOCK_KEY);
+
   let sidebar = null;
 
   function findSidebar() {
@@ -10,12 +14,26 @@
       document.querySelector('nav[aria-label*="サイドバー"]'),
       document.querySelector('nav[aria-label*="sidebar" i]')
     ];
+
     return candidates.find(Boolean) || null;
   }
 
   function hideSidebar() {
     sidebar = findSidebar();
-    if (sidebar) sidebar.classList.add("chatgpt-helper-locked-sidebar");
+
+    if (sidebar) {
+      sidebar.classList.add("chatgpt-helper-locked-sidebar");
+      sidebar.setAttribute("data-chatgpt-helper-locked", "true");
+    }
+  }
+
+  function showSidebar() {
+    if (!sidebar) sidebar = findSidebar();
+
+    if (sidebar) {
+      sidebar.classList.remove("chatgpt-helper-locked-sidebar");
+      sidebar.removeAttribute("data-chatgpt-helper-locked");
+    }
   }
 
   function createLockScreen() {
@@ -31,6 +49,7 @@
         <div id="chatgpt-helper-error"></div>
       </div>
     `;
+
     document.body.appendChild(lock);
 
     const input = lock.querySelector("#chatgpt-helper-password");
@@ -40,7 +59,7 @@
     function tryUnlock() {
       if (input.value === PASSWORD) {
         sessionStorage.setItem(LOCK_KEY, "true");
-        if (sidebar) sidebar.classList.remove("chatgpt-helper-locked-sidebar");
+        showSidebar();
         lock.remove();
       } else {
         error.textContent = "パスワードが違います。";
@@ -50,24 +69,34 @@
     }
 
     unlock.addEventListener("click", tryUnlock);
+
     input.addEventListener("keydown", event => {
       if (event.key === "Enter") tryUnlock();
     });
+
     input.focus();
   }
 
   function initialize() {
-    if (sessionStorage.getItem(LOCK_KEY) === "true") return;
     hideSidebar();
     createLockScreen();
   }
 
   initialize();
 
+  // ChatGPTはサイドバーを動的に生成するため、生成後にも再ロックする
   const observer = new MutationObserver(() => {
     if (sessionStorage.getItem(LOCK_KEY) === "true") return;
-    if (!sidebar || !document.contains(sidebar)) hideSidebar();
+
+    hideSidebar();
+
+    if (!document.getElementById("chatgpt-helper-lock")) {
+      createLockScreen();
+    }
   });
 
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
 })();
