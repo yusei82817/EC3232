@@ -11,10 +11,6 @@
   z-index: 999999;
 }
 
-.chatgpt-helper-locked-sidebar {
-  display: none !important;
-}
-
 #chatgpt-helper-lock {
   position: fixed;
   inset: 0;
