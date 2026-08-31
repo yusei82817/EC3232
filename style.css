@@ -10,3 +10,64 @@
   cursor: pointer;
   z-index: 999999;
 }
+
+.chatgpt-helper-locked-sidebar {
+  display: none !important;
+}
+
+#chatgpt-helper-lock {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.72);
+  font-family: system-ui, sans-serif;
+}
+
+.chatgpt-helper-lock-box {
+  width: min(360px, calc(100vw - 40px));
+  padding: 24px;
+  border-radius: 14px;
+  background: #202020;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.chatgpt-helper-lock-title {
+  margin-bottom: 18px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#chatgpt-helper-password {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #555;
+  border-radius: 8px;
+  outline: none;
+  background: #111;
+  color: white;
+}
+
+#chatgpt-helper-unlock {
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#chatgpt-helper-error {
+  min-height: 20px;
+  margin-top: 8px;
+  color: #ff8080;
+  font-size: 13px;
+}
