@@ -1,5 +1,5 @@
 (() => {
-  const PASSWORD = "yuu32323327";
+  const PASSWORD = "c6Wu@Hb7";
   const LOCK_KEY = "chatgpt-helper-sidebar-unlocked";
   let sidebar = null;
 
